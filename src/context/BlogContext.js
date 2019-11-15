@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 
 const BlogContext = React.createContext();
 
@@ -17,15 +17,28 @@ const listofBlogs = [
   }
 ];
 
+const reducer = (state, action) => {
+  // state === {data:string ,id:string}
+  // action === {type: 'addBlogPost' || 'deleteBlogPost' || 'editBlogPost'}
+  switch (action.type) {
+    case "addBlogPost":
+      console.log(state);
+      return [...state, { blog: "Scheisse", id: `${state.length + 1}` }];
+    default:
+      break;
+  }
+};
+
 export const BlogProvider = ({ children }) => {
   const [blog, setBlog] = useState([]);
+  const [state, dispatch] = useReducer(reducer, listofBlogs);
 
   const addBlogPost = () => {
-    setBlog([...blog, { blog: `New Blog #${blog.length + 1}`, id: `${blog.length + 1}` }]);
+    dispatch({ type: "addBlogPost" });
   };
 
   return (
-    <BlogContext.Provider value={{ data: blog, addBlogPost: addBlogPost }}>
+    <BlogContext.Provider value={{ data: state, addBlogPost: addBlogPost }}>
       {children}
     </BlogContext.Provider>
   );
