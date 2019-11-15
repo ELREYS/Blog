@@ -9,7 +9,7 @@ import {
 import BlogContext from "../context/BlogContext";
 
 const IndexScreen = () => {
-  const { data, addBlogPost } = useContext(BlogContext);
+  const { data, customfunc } = useContext(BlogContext);
   console.log(data);
 
   return (
@@ -22,7 +22,9 @@ const IndexScreen = () => {
       />
       <Button
         title="Add post"
-        onPress={addBlogPost}
+        onPress={() => {
+            customfunc({type:'addBlogPost', blog: `Test #${data.lenghth + 1}` ,id:`${data.lenghth + 1}`})
+        }}
       />
     </View>
   );
