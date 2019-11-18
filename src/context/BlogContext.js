@@ -5,15 +5,15 @@ import  createDataContext from '../context/createDataContext'
 
 const listofBlogs = [
   {
-    blog: "First Blog 1",
+    blog: "Blog #",
     id: "1"
   },
   {
-    blog: "First Blog 2",
+    blog: "Blog #",
     id: "2"
   },
   {
-    blog: "First Blog 3",
+    blog: "Blog #",
     id: "3"
   }
 ];
@@ -24,7 +24,7 @@ const blogReducer = (state, action) => {
   switch (action.type) {
     case "addBlogPost":
       //console.log(state);
-      return [...state, { blog: "Blog", id: `${state.length + 1}` }];
+      return [...state, { blog: "Blog #",id:`${state.length + 1}` }];
     default:
       return state;
   }

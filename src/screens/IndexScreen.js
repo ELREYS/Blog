@@ -15,7 +15,7 @@ const IndexScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.container}>
             <Text style={styles.title}>
-              {item.blog} {item.id}
+              {item.blog}{item.id}
             </Text>
             <Feather style={styles.icon} name="trash" />
           </View>
@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent:'space-between',
     paddingVertical:20,
-    borderTopWidth:1,
     borderBottomWidth:1,
     borderColor:'black',
     backgroundColor: "#f2f2f2", 
@@ -41,7 +40,8 @@ const styles = StyleSheet.create({
 
   },
   icon:{
-      fontSize:24
+      fontSize:24,
+      paddingRight:10,
   }
 });
 
