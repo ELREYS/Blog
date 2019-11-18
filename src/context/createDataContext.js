@@ -1,16 +1,30 @@
-import React,{useReducer} from 'react';
-export default (reducer,actions,initialState) => {
-const Context  = React.createContext();
+import React, { useReducer } from "react";
 
-const Provider = ({children}) =>{
+//Setup a Generic Context Functions Components
+// reducer === object with state and actions
+// actions === functions that changed the state of the data
+// initiaState === [],"",...
 
-    const [state,dispatch] = useReducer(reducer,initialState);
+export default (reducer, actions, initialState) => {
+  const Context = React.createContext(); //1.
+
+  const Provider = ({ children }) => {
+    const [state, dispatch] = useReducer(reducer, initialState); // 2.
+
+    const boundActions = {};
+    //actions === {addBlogPost: (dispatch) => {return () => {} }}
+    for (let key in actions){
+    
+    // key === 'addBlogPost'
+    boundActions[key] = actions[key](dispatch,`Functions ${actions[key]} runs now`)
+    console.log(boundActions);
+    }
 
     return (
-        <BlogContext.Provider value={{ data: state, customfunc: dispatch }}>
-          {children}
-        </BlogContext.Provider>
-      );
-}
-return {Context,Provider};
+      <Context.Provider value={{ state, ...boundActions }}>
+        {children}
+      </Context.Provider>
+    );
+  };
+  return { Context, Provider };
 };

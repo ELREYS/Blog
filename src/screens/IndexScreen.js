@@ -1,18 +1,18 @@
 import React, { useContext, createRef } from "react";
 import { FlatList, Text, StyleSheet, View, Button } from "react-native";
-import BlogContext from "../context/BlogContext";
+import { Context } from "../context/BlogContext";
 
 const IndexScreen = () => {
-  const { data, addBlogPost } = useContext(BlogContext);
-  console.log(data);
+  const { state, addBlogPost } = useContext(Context);
+  //console.log(state);
 
   return (
     <View>
       <Text>Index Screen</Text>
       <FlatList
         style={styles.container}
-        data={data}
-        keyExtractor={data => data.id}
+        data={state}
+        keyExtractor={state => state.id}
         renderItem={({ item }) => (
           <Text>
             {item.blog} {item.id}
@@ -21,13 +21,7 @@ const IndexScreen = () => {
       />
       <Button
         title="Add post"
-        onPress={() => {
-          addBlogPost({
-            type: "addBlogPost",
-            blog: `Test #${data.lenghth + 1}`,
-            id: `${data.lenghth + 1}`
-          });
-        }}
+        onPress={addBlogPost}
       />
     </View>
   );
@@ -38,7 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
     marginLeft: 10,
     marginTop: 15,
-    marginRight:15,
+    marginRight: 15
   }
 });
 
