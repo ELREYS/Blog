@@ -1,44 +1,46 @@
-
-import  createDataContext from '../context/createDataContext'
+import createDataContext from "../context/createDataContext";
 
 //const BlogContext = React.createContext();
 
-const listofBlogs = [
-  {
-    blog: "Blog #",
-    id: "1"
-  },
-  {
-    blog: "Blog #",
-    id: "2"
-  },
-  {
-    blog: "Blog #",
-    id: "3"
-  }
-];
+
 
 const blogReducer = (state, action) => {
   // state === {data:string ,id:string}
   // action === {type: 'addBlogPost' || 'deleteBlogPost' || 'editBlogPost'}
   switch (action.type) {
+    case "deleteBlogPost":
+      return state.filter(blogPost => {
+        //blogPost.id !== action.payload
+
+        if (blogPost.id !== action.payload) {
+          return state;
+        }
+      });
+
     case "addBlogPost":
-      //console.log(state);
-      return [...state, { blog: "Blog #",id:`${state.length + 1}` }];
+      return [
+        ...state,
+        { blog: `Blog #  - ${Math.floor(Math.random() * 9999)}`, id: `${Math.floor(Math.random() * 9999)}` }
+      ];
     default:
       return state;
   }
 };
 
-const addBlogPost = (dispatch,message) =>{
-    return () =>{
-        dispatch({type:'addBlogPost'});
-        console.log(message);
-        
-    }
-    
-}
+const addBlogPost = dispatch => {
+  return () => {
+    dispatch({ type: "addBlogPost" });
+  };
+};
 
+const deleteBlogPost = dispatch => {
+  return id => {
+    dispatch({ type: "deleteBlogPost", payload: id });
+  };
+};
 
-
-export const {Context,Provider} =  createDataContext(blogReducer,{addBlogPost},listofBlogs);
+export const { Context, Provider } = createDataContext(
+  blogReducer,
+  { addBlogPost, deleteBlogPost },
+  []
+);
