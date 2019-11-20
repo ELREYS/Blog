@@ -10,36 +10,44 @@ import {
 import { Context } from "../context/BlogContext";
 import { Feather } from "@expo/vector-icons";
 
-
-
-
-const IndexScreen = ({navigation}) => {
+const IndexScreen = ({ navigation }) => {
   const { state, addBlogPost, deleteBlogPost } = useContext(Context);
-  console.log(state.length);
-  console.log(state);
-  
+  //console.log(state.length);
+  //console.log(state);
 
   return (
     <View>
-      <Button title="Add post" onPress={addBlogPost} />
       <FlatList
         data={state}
         keyExtractor={state => state.id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('Show',{id:item.id})}>
-          <View style={styles.container}>
-            <Text style={styles.title}>
-              {item.blog}
-            </Text>
-            <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
-              <Feather style={styles.icon} name="trash" />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Show", { id: item.id })}
+          >
+            <View style={styles.container}>
+              <Text style={styles.title}>{item.title}</Text>
+              <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
+                <Feather style={styles.icon} name="trash" />
+              </TouchableOpacity>
+            </View>
           </TouchableOpacity>
         )}
       />
     </View>
   );
+};
+
+IndexScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerRight: (
+      <Feather
+      style={styles.AddContent}
+        onPress={() => navigation.navigate("CreateScreen")}
+        name="plus"
+        size={30}
+      />
+    )
+  };
 };
 
 const styles = StyleSheet.create({
@@ -58,9 +66,9 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 24,
     paddingRight: 10
+  },AddContent:{
+    marginRight:15,
   }
 });
-
-
 
 export default IndexScreen;
