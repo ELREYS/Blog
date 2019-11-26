@@ -1,8 +1,7 @@
 import React, { useContext,useState } from "react";
-import { Button,TextInput,Text, StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { Context } from "../context/BlogContext";
-
-import { Feather } from "@expo/vector-icons";
+import BlogPostForm from "../components/BlogPostForm";
 
 const EditScreen = ({ navigation }) => {
   //console.log(navigation);
@@ -17,31 +16,16 @@ const EditScreen = ({ navigation }) => {
   [title,setTitle] = useState(blogDetails.title);
   [content,setContent] = useState(blogDetails.content);
 
-
+  console.log("EditScreen:"+state);
+  
 
   return (
-    <View>
-      <Text style={styles.label}>Enter Title</Text>
-      <TextInput
-        style={styles.input}
-        value={title}
-        onChangeText={text => setTitle(text)}
-      />
-      <Text style={styles.label}>Enter Content</Text>
-      <TextInput
-        style={styles.input}
-        value={content}
-        onChangeText={content => setContent(content)}
-      />
-      <Button
-        title="Save Change"
-        onPress={() => {
-            editBlogPost(id,title, content), navigation.navigate("Index");
-        }}
-      />
-      </View>
-  );
-};
+   <BlogPostForm 
+   initialValues={{title,content}}
+   onSubmit={(title,content)=> {
+        editBlogPost(id,title,content,() => navigation.pop())
+   }}/>
+  )};
 
 const styles = StyleSheet.create({
   container: {
