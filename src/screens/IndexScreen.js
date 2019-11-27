@@ -5,15 +5,19 @@ import {
   Text,
   StyleSheet,
   View,
-  Button
 } from "react-native";
 import { Context } from "../context/BlogContext";
 import { Feather } from "@expo/vector-icons";
 
 const IndexScreen = ({ navigation }) => {
-  const { state, addBlogPost, deleteBlogPost } = useContext(Context);
+  const { state, addBlogPost, deleteBlogPost,getBlogPosts } = useContext(Context);
   //console.log(state.length);
   //console.log(state);
+
+useEffect (()=>{
+getBlogPosts();
+},[])
+
 
   return (
     <View>

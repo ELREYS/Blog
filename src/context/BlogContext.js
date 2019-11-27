@@ -1,11 +1,22 @@
 import createDataContext from "../context/createDataContext";
+import jsonServer from "../api/jsonServer";
 
 //const BlogContext = React.createContext();
+
+//Request API
+
+try {
+} catch (error) {}
+
+BlogPosts = [];
 
 const blogReducer = (state, action) => {
   // state === {data:string ,id:string}
   // action === {type: 'addBlogPost' || 'deleteBlogPost' || 'editBlogPost'}
   switch (action.type) {
+    case 'getBlogPosts':
+      
+      return action.payload
     case "deleteBlogPost":
       return state.filter(blogPost => {
         //blogPost.id !== action.payload
@@ -27,28 +38,26 @@ const blogReducer = (state, action) => {
         }
       ];
     case "editBlogPost":
-      
-      return state.map((blogPost) => {
-        if (blogPost.id === action.payload.id){
+      return state.map(blogPost => {
+        if (blogPost.id === action.payload.id) {
           console.log(action.payload);
-          
+
           return action.payload;
-        }else{
+        } else {
           return blogPost;
         }
-      })
-      
+      });
+
     default:
       return state;
   }
 };
 
 const addBlogPost = dispatch => {
-  return (title, content,callback) => {
-    dispatch({ type: "addBlogPost", payload: { title, content,callback } });
+  return (title, content, callback) => {
+    dispatch({ type: "addBlogPost", payload: { title, content, callback } });
     callback();
   };
-  
 };
 
 const deleteBlogPost = dispatch => {
@@ -58,15 +67,25 @@ const deleteBlogPost = dispatch => {
 };
 
 const editBlogPost = dispatch => {
-  return (id, title, content,callback) => {
-    dispatch({ type: "editBlogPost", payload: { id, title, content,callback } });
+  return (id, title, content, callback) => {
+    dispatch({
+      type: "editBlogPost",
+      payload: { id, title, content, callback }
+    });
     callback();
   };
+};
+
+const getBlogPosts = dispatch => {
   
+  return async () => {
+    const response = await jsonServer.get("/blogposts");
+    dispatch({ type: "getBlogPosts", payload: response.data });
+  };
 };
 
 export const { Context, Provider } = createDataContext(
   blogReducer,
-  { addBlogPost, deleteBlogPost, editBlogPost },
+  { addBlogPost, deleteBlogPost, editBlogPost,getBlogPosts },
   []
 );
