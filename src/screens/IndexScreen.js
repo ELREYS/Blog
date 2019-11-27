@@ -4,33 +4,49 @@ import {
   FlatList,
   Text,
   StyleSheet,
-  View,
+  View
 } from "react-native";
 import { Context } from "../context/BlogContext";
 import { Feather } from "@expo/vector-icons";
 
 const IndexScreen = ({ navigation }) => {
-  const { state, addBlogPost, deleteBlogPost,getBlogPosts } = useContext(Context);
+  const { state, deleteBlogPost, getBlogPosts } = useContext(
+    Context
+  );
   //console.log(state.length);
   //console.log(state);
 
-useEffect (()=>{
-getBlogPosts();
-},[])
+  useEffect(() => {
+    console.log("I start useEffect");
+    
+    getBlogPosts();
 
+    const listener = navigation.addListener("didFocus", () => {
+      console.log("I run this Functions inside useEffect");
+      
+      getBlogPosts();
+    });
+
+    return ()=> {
+      console.log("I leave useEffect");
+      
+      listener.remove();
+    };
+  }, []);
 
   return (
     <View>
       <FlatList
         data={state}
-        keyExtractor={state => state.id}
+        keyExtractor={state => state.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => navigation.navigate("Show", { id: item.id })}
           >
             <View style={styles.container}>
               <Text style={styles.title}>{item.title}</Text>
-              <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
+              <TouchableOpacity onPress={() => deleteBlogPost(item.id
+              )}>
                 <Feather style={styles.icon} name="trash" />
               </TouchableOpacity>
             </View>
@@ -45,7 +61,7 @@ IndexScreen.navigationOptions = ({ navigation }) => {
   return {
     headerRight: (
       <Feather
-      style={styles.AddContent}
+        style={styles.AddContent}
         onPress={() => navigation.navigate("CreateScreen")}
         name="plus"
         size={30}
@@ -70,8 +86,9 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 24,
     paddingRight: 10
-  },AddContent:{
-    marginRight:15,
+  },
+  AddContent: {
+    marginRight: 15
   }
 });
 
